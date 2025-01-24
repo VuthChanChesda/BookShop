@@ -1,0 +1,27 @@
+<!-- filepath: /Users/vuthchanchesda/DanjanGo Project/crm/accounts/templates/accounts/base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'partials/header.html'%}
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body class="d-flex flex-column vh-100">
+    <header>
+         <!-- Navigation links -->
+        {% include 'partials/navbar.html' %}
+    </header>
+
+    
+    <main>
+        {% block content %}
+        <!-- Main content will be injected here -->
+        {% endblock %}
+    </main>
+
+    {% include 'partials/footer.html'%}
+    <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

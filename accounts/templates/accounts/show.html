@@ -1,0 +1,96 @@
+{% extends 'accounts/boilerplate.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<!-- <div class="container">
+    <h1>{{ book.title }}</h1>
+    <p>Author: {{ book.author.name }}</p>
+    <p>Category: {{ book.category.name }}</p>
+    <p>Price: {{ book.price }}</p>
+    <p>Stock: {{ book.stock }}</p>
+    <p>Publisher: {{ book.publisher }}</p>
+    <p>Publication Date: {{ book.publication_date }}</p>
+    <p>Language: {{ book.language }}</p>
+    <p>{{book.description}}</p>
+
+    <img src="{{ book.cover_image }}" alt="{{ book.title }} cover">
+</div> -->
+
+<div class="container">
+    <div class="row  offset-md-1">
+        
+        <div class="col-md-3 show-img">
+            <img src="{{ book.cover_image }}" alt="{{ book.title }} cover" class="img-fluid">
+        </div>
+        <div class="col-md-8 show-info">
+            <h1>{{ book.title }}</h1>
+            <p> <span id="authorName">{{ book.author.name }}</span>(Auther)</p>
+            <div class="block-price my-4">
+            <p>Hard Cover</p>
+            <p>${{ book.price }}</p>
+            </div>
+
+            <button class="btn-Add-to-card-show mb-3">Add to Card</button>
+            <h2>Description</h2>
+            <p>{{book.description}}</p>
+            
+            <h2>Product Details</h2>
+            <p>Price: <span>${{ book.price }}</span></p>
+            <p>Publisher: <span>{{ book.publisher }}</span></p>
+            <p>Publication Date: <span>{{ book.publication_date }}</span></p>
+            <p>Language: <span>{{ book.language }}</span></p>
+            <p class="category-link-show-page">category : 
+              <a href="{% url 'book_by_category' slug=book.category.slug %}">
+                <span>{{ book.category.name }}</span>
+              </a>
+            </p>
+
+           
+            {% if book.author.bio %}
+            
+              <h2>About the Author</h2>
+              <p>{{book.author.bio}}</p>
+            {% endif %}
+
+            {% if reviews %}
+            <h2>Reviews</h2>
+                {% for review in reviews %}
+                    <p>{{ review.comment }} --<span>{{ review.reviewer.name }}</span></p>
+                {% endfor %}
+            {% endif %}
+         
+        </div>
+        
+
+    </div>
+</div>
+
+      <!-- slide-img -->
+      <div class="container my-2 " id="newBook">
+        <div class="miniLogoWithText">
+          <h2 class="mb-1" id="text">Manga & Graphic Novels</h2>
+          <img
+            src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487"
+            alt=""
+          />
+          <a href="#">by BookShop.Org</a>
+        </div>
+
+        <div class="containers">
+        {% for book in books %}
+          <div class="box">
+            <a href="{% url 'book_detail' slug=book.slug %}">
+            <img
+              src="{{ book.cover_image }}"
+              alt=""
+            />
+             </a>
+          </div>
+        {% endfor %}
+
+        </div>
+    </div>
+      <!-- slide-img -->
+
+{% endblock %}

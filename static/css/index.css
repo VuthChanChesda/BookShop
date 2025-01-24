@@ -1,0 +1,173 @@
+.miniLogoWithText img {
+    width: 4.5%;
+    margin: 10px 0;
+    border-radius: 50%;
+    border: 0.2px solid lightgray;
+  }
+  .miniLogoWithText a {
+    text-decoration: none;
+    color: gray;
+  }
+
+  .containers img {
+    width: 100%;
+    height: 100%;
+    /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+    border-radius: 3%;
+    transition: transform 0.5s ease-in-out;
+  
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  }
+  
+  .containers img:hover {
+    transform: scale(1.05);
+  }
+
+  .containers {
+    padding: 10px 8px 10px 8px;
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+  }
+  .containers::before,
+  .containers::after {
+    content: "";
+    width: 100%;
+  }
+
+  .box {
+    height: 222px;
+  
+    min-width: 142px;
+    margin-right: 10px;
+    flex-grow: 1;
+  }
+
+
+/* 4 x 4 card */
+.book-card {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 30px ;
+  border-bottom: 1px solid black;
+  height: 250px;
+}
+
+.book-cover {
+  width: 140px;
+  height: auto;
+  transition: transform 0.5s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
+}
+
+.book-cover:hover {
+  transform: scale(1.05);
+}
+
+.book-info {
+  padding-top: 0.5rem;
+}
+
+.book-title {
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.book-author {
+  color: #666;
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.current-price {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.original-price {
+  color: red;
+  text-decoration: line-through;
+}
+/* 4 x 4 card */
+
+/* promotion-card */
+#cards {
+  flex-direction: row;
+  width: 100%;
+  font-size: 1.7rem;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+#card-text {
+  font-family: "Oswald", sans-serif;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.img-card {
+  background-color: rgb(233, 232, 232);
+  padding: 30px 0 0 20px;
+}
+
+.img-card img {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  border-radius: 2%;
+}
+
+#cards img {
+  width: 45%;
+  margin-left: 8px;
+}
+
+.card-body-pro-logo {
+  width: 100%;
+  height: 60px;
+  margin-left: -15px;
+}
+
+.card-body-pro-logo p {
+  display: inline;
+  font-size: 1rem;
+  color: rgb(168, 166, 166);
+}
+
+.card-body-pro-logo img {
+  height: 40px;
+  border: 1px solid rgb(241, 231, 231);
+  border-radius: 50%;
+  -webkit-box-shadow: 2px 2px 22px -5px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 22px -5px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 22px -5px rgba(0, 0, 0, 0.75);
+}
+.card-body-pro-logo a {
+  text-decoration: none;
+  color: rgb(168, 166, 166);
+}
+/* promotion-card */
+
+@media (max-width: 768px) {
+  .book-card {
+    flex-direction: column;
+    text-align: center;
+    height: auto;
+  }
+  
+  .book-cover {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  .book-info {
+    padding-top: 1rem;
+  }
+
+
+}  
+
