@@ -67,8 +67,11 @@ function updateURL(value) {
                             const bookElement = document.createElement('div');
                             if(data.length === 1) {
                                 bookElement.classList.add('col-md-12', 'col-lg-12', 'mb-3');
-                            } else {
+                            } else if (data.length === 2) {
                                 bookElement.classList.add('col-md-6', 'col-lg-5', 'mb-3');
+                            }
+                            else {
+                                bookElement.classList.add('col-md-6', 'col-lg-3', 'mb-3');
                             }
                             bookElement.innerHTML = `
                                 <div class="card" id="book-card">   
