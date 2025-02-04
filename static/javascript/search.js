@@ -83,7 +83,7 @@ function updateURL(value) {
                                         <p class="card-text text-muted">${book.author}</p>
                                         <p>$${book.price}</p>
                                         <div class="d-flex justify-content-center">
-                                            <button class="btn-Add-to-card-show-by-category mb-3">Add to Cart</button>
+                                            <button class="btn-Add-to-card-show-by-category mb-3 add-to-cart-btn" id="add-to-card" data-book-id="${book.id}">Add to Cart</button>
                                         </div>
                                     </div>
                                 </div>

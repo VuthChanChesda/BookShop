@@ -30,8 +30,10 @@
             <p>Hard Cover</p>
             <p>${{ book.price }}</p>
             </div>
+            
+            {% csrf_token %}
+            <button class="btn-Add-to-card-show mb-3 add-to-cart-btn" id="add-to-card" data-book-id="{{ book.id }}">Add to Cart</button>
 
-            <button class="btn-Add-to-card-show mb-3">Add to Card</button>
             <h2>Description</h2>
             <p>{{book.description}}</p>
             
