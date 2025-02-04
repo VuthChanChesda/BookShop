@@ -53,7 +53,12 @@ function updateCartItemCount() {
         .then(data => {
             const cartItemCountElement = document.getElementById('cart-item-count');
             if (cartItemCountElement) {
-                cartItemCountElement.textContent = data.count;
+                if (data.count > 0) {
+                    cartItemCountElement.textContent = data.count;
+                    cartItemCountElement.style.display = 'inline';
+                } else {
+                    cartItemCountElement.style.display = 'none';
+                }
             }
         })
         .catch(error => console.error('Error:', error));
