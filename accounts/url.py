@@ -11,6 +11,8 @@ urlpatterns = [
     path('books/<slug:slug>/', views.book_detail, name='book_detail'),
     path('books/category/<slug:slug>/', views.show_by_category, name='book_by_category'),
     path('books/is_in_cart/<int:book_id>/', views.is_in_cart, name='is_in_cart'),
+    path('cart/item_count/', views.cart_item_count, name='cart_item_count'),
+
 
 
 

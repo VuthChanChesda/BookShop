@@ -1,3 +1,4 @@
+
 function updateURL(value) {
     if (value) {
         history.pushState({}, '', `?q=${encodeURIComponent(value)}`);
@@ -90,11 +91,12 @@ function updateURL(value) {
                             `;
                             resultsContainer.appendChild(bookElement);
                         });
+                        window.attachEventListeners();
+                        // window.updateCartItemCount();
                     }
                     else {
                         resultsContainer.innerHTML = '<p class="text-center"><span> No results found</span></p>';
                     }
-
 
                 });
         } else {

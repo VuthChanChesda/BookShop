@@ -12,18 +12,6 @@ from django.views.decorators.http import require_GET
 def home(request):
     return render(request, 'accounts/home.html')
 
-
-
-
-# def coffee_list(request):
-#     books = Book.objects.all()  # Query the database for all customers
-#     context = {
-#         'books': books
-#     }
-#     return render(request, 'accounts/coffee.html', books)
-
-
-
 def index(request):
     # Get the category by name or raise a 404 error if not found
     category_name = 'Comics & Graphic Novels'
@@ -80,14 +68,7 @@ def show_by_category(request, slug):
     return render(request, 'accounts/show_by_category.html', context)
 
 
-
 def search(request):
-    # query = request.GET.get('q', '')
-    # books = Book.objects.filter(title__icontains=query) if query else []
-    # context = {
-    #     'query': query,
-    #     'books': books,
-    # }
     return render(request, 'accounts/search.html')  
 
 def search_books(request):
@@ -153,4 +134,13 @@ def is_in_cart(request, book_id):
     
     in_cart = CartItem.objects.filter(Book_id=book_id, session_key=session_key).exists()
     return JsonResponse({'in_cart': in_cart})
+
+@require_GET
+def cart_item_count(request):
+    session_key = request.session.session_key
+    if not session_key:
+        return JsonResponse({'count': 0})
+    
+    count = CartItem.objects.filter(session_key=session_key).count()
+    return JsonResponse({'count': count})
 

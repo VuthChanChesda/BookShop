@@ -14,7 +14,7 @@
           <!-- Search Bar -->
 
           <!-- Links -->
-          <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <!-- <form class="d-flex ms-auto" style="width: 40%">
               <input
                 class="form-control me-2 search-bar"
@@ -47,9 +47,14 @@
             <a href="/LoginPageFile/login.html" class="nav-link ms-3 btn"
               ><span>Sign In</span></a
             >
-            <a href="" class="nav-link ms-3"
-              ><i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i
-            ></a>
+
+          <div class="cart-container">
+            <a href="" class="nav-link ms-3">
+              <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>
+              <span id="cart-item-count" class="cart-item-count">0</span>
+           </a>
+          </div>
+        
           </div>
           </div>
 
@@ -62,8 +67,7 @@
           >
         </div>
 
-
-        </div>
+      </div>
       </nav>
 
       <!-- Second Row (Categories List) with Offcanvas -->
