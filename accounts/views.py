@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Book, Category , Review
+from .models import Book, Category , Review , CartItem
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
+from django.views.decorators.http import require_GET
 
 
 
@@ -8,18 +11,6 @@ from django.http import JsonResponse
 
 def home(request):
     return render(request, 'accounts/home.html')
-
-
-
-
-# def coffee_list(request):
-#     books = Book.objects.all()  # Query the database for all customers
-#     context = {
-#         'books': books
-#     }
-#     return render(request, 'accounts/coffee.html', books)
-
-
 
 def index(request):
     # Get the category by name or raise a 404 error if not found
@@ -77,14 +68,7 @@ def show_by_category(request, slug):
     return render(request, 'accounts/show_by_category.html', context)
 
 
-
 def search(request):
-    # query = request.GET.get('q', '')
-    # books = Book.objects.filter(title__icontains=query) if query else []
-    # context = {
-    #     'query': query,
-    #     'books': books,
-    # }
     return render(request, 'accounts/search.html')  
 
 def search_books(request):
@@ -99,16 +83,64 @@ def search_books(request):
                 'price': book.price,
                 'cover_image': book.cover_image,
                 'slug': book.slug,
+                'id': book.id,
             })
         return JsonResponse(results, safe=False)
     return JsonResponse([], safe=False)
 
 def new_books(request):
    
-
     books = Book.objects.all().order_by('-id')  # Order by primary key in descending order
     context = {
         'books': books
     }
     return render(request, 'accounts/show_by_category.html', context)
+
+@require_POST
+def add_to_cart(request, book_id):
+    # Parse JSON data from the request body
+    data = json.loads(request.body)
+    quantity = data.get('quantity', 1)  # Default to 1 if quantity is not provided
+
+    book = get_object_or_404(Book, id=book_id)
+    
+    # Ensure the user has a session key
+    if not request.session.session_key:
+        request.session.create()
+    session_key = request.session.session_key
+
+    # Check if the book is already in the cart
+    if CartItem.objects.filter(Book=book, session_key=session_key).exists():
+        return JsonResponse({'success': False, 'error': 'Book is already in the cart'})
+
+    # Add or update the cart item
+    cart_item, created = CartItem.objects.get_or_create(
+        Book=book,
+        session_key=session_key,
+        defaults={'quantity': quantity}
+    )
+    if not created:
+        cart_item.quantity += quantity
+        cart_item.save()
+
+    # Return a JSON response for AJAX
+    return JsonResponse({'success': True})
+
+@require_GET
+def is_in_cart(request, book_id):
+    session_key = request.session.session_key
+    if not session_key:
+        return JsonResponse({'in_cart': False})
+    
+    in_cart = CartItem.objects.filter(Book_id=book_id, session_key=session_key).exists()
+    return JsonResponse({'in_cart': in_cart})
+
+@require_GET
+def cart_item_count(request):
+    session_key = request.session.session_key
+    if not session_key:
+        return JsonResponse({'count': 0})
+    
+    count = CartItem.objects.filter(session_key=session_key).count()
+    return JsonResponse({'count': count})
 

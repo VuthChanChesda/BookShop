@@ -52,8 +52,6 @@ class Book(models.Model):
         return self.title
 
 
-
-
 class Reviewer(models.Model):
     name = models.CharField(max_length=100)
     # email = models.EmailField()
@@ -68,4 +66,12 @@ class Review(models.Model):
 
     def __str__(self):
         return self.comment
+
+class CartItem(models.Model):
+    Book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+    session_key = models.CharField(max_length=40, null=True, blank=True) 
+    
+    def __str__(self):
+        return self.Book.title
 

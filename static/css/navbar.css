@@ -216,6 +216,37 @@ input:not(:placeholder-shown) ~ .reset {
     rgba(240, 46, 170, 0.2) 15px 15px;
 }
 
+.cart-container {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.cart-container i {
+  font-size: 1.3rem;
+  /* z-index: 2;
+  position: relative; Ensure z-index works */
+
+}
+
+
+
+.cart-item-count {
+  position: absolute;
+  top: -9px;
+  right: -8px;
+  background-color: purple;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  /* z-index: 1; */
+
+}
+
 
 
 

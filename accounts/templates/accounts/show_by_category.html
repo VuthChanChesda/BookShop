@@ -44,7 +44,8 @@
                         <p>${{book.price}}</p>
 
                         <div class="d-flex justify-content-center">
-                            <button class="btn-Add-to-card-show-by-category mb-3">Add to Cart</button>
+                            {% csrf_token %}
+                            <button class="btn-Add-to-card-show-by-category mb-3 add-to-cart-btn" id="add-to-card" data-book-id="{{ book.id }}">Add to Cart</button>
                         </div>
 
                     </div>
