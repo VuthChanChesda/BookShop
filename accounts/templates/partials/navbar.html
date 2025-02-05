@@ -1,4 +1,4 @@
-
+{% load static %}
       <!-- Main Navbar (First Row) -->
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -15,18 +15,7 @@
 
           <!-- Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- <form class="d-flex ms-auto" style="width: 40%">
-              <input
-                class="form-control me-2 search-bar"
-                type="search"
-                placeholder="Search for anything"
-                aria-label="Search"
-                style="border-radius: 25px"
-              />
-              <button class="btn btn-outline-success" type="submit">
-                <i class="fas fa-search"></i>
-              </button>
-            </form> -->
+
                 <form class="form ms-auto" action="{% url 'search' %}" method="get">
                   <button type="submit">
                       <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
@@ -49,7 +38,7 @@
             >
 
           <div class="cart-container">
-            <a href="" class="nav-link ms-3">
+            <a href="{% url 'cart_items' %}" class="nav-link ms-3">
               <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>
               <span id="cart-item-count" class="cart-item-count">0</span>
            </a>
@@ -61,11 +50,16 @@
           <div
           class="navbar-nav ms-auto d-flex flex-row d-lg-none"  id="login-sign-up-for-small-screen-non-collapsed"
         >
-          <a href="/signUpPage/signUP.html" class="nav-link mx-3 btn">Sign Up</a>
-          <a href="/LoginPageFile/login.html" class="nav-link btn"
-            >Sign In</a
-          >
+          <img src="{% static 'images/user.png' %}"
+          alt="" class="user-icon" />
+          <div class="cart-container">
+            <a href="{% url 'cart_items' %}" class="nav-link ms-3">
+              <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>
+              <span id="cart-item-count" class="cart-item-count">0</span>
+           </a>
+          </div>
         </div>
+        
 
       </div>
       </nav>

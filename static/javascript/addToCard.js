@@ -16,6 +16,8 @@ function attachEventListeners() {
                 if (data.in_cart) {
                     button.textContent = 'Already in Cart';
                     button.disabled = true;
+                    button.classList.add('disabled'); // Add the disabled class
+
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -37,6 +39,7 @@ function attachEventListeners() {
                 if (data.success) {
                     button.textContent = 'Already in Cart';
                     button.disabled = true;
+                    button.classList.add('disabled'); // Add the disabled class
                     updateCartItemCount();  // Update cart item count
                 } else {
                     alert('Failed to add item to cart: ' + data.error);
@@ -51,15 +54,20 @@ function updateCartItemCount() {
     fetch('/cart/item_count/')
         .then(response => response.json())
         .then(data => {
-            const cartItemCountElement = document.getElementById('cart-item-count');
-            if (cartItemCountElement) {
-                if (data.count > 0) {
-                    cartItemCountElement.textContent = data.count;
-                    cartItemCountElement.style.display = 'inline';
-                } else {
-                    cartItemCountElement.style.display = 'none';
+            const cartItemCountElement = document.querySelectorAll('.cart-item-count');
+            cartItemCountElement.forEach(card => {
+
+                if (card) {
+                    if (data.count > 0) {
+                        card.textContent = data.count;
+                        card.style.display = 'inline';
+                    } else {
+                        card.style.display = 'none';
+                    }
                 }
-            }
+
+            });
+
         })
         .catch(error => console.error('Error:', error));
 }

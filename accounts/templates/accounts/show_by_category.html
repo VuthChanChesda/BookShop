@@ -25,37 +25,27 @@
 
     </div>
 
-
-    <div class="container d-flex justify-content-center align-items-center mt-3 flex-wrap">
-
-
-        <div class="row">
-
-        {% for book in books %}
-        <div class="col-md-4 col-lg-3 mb-3">
-
+    <div class="container mt-3">
+        <div class="row justify-content-center">
+            {% for book in books %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                 <div class="card" id="book-card">    
                     <div class="card-body card-body-show-by-category">
                         <a href="{% url 'book_detail' slug=book.slug %}">
-                        <img   src="{{book.cover_image}}" class="d-block mx-auto" alt="" > 
+                            <img src="{{book.cover_image}}" class="d-block mx-auto" alt="{{ book.title }}"> 
                         </a>
                         <h6 class="card-title mt-3 truncate">{{book.title}}</h6>
                         <p class="card-text text-muted"><span class="author-name-category">{{book.author.name}}</span></p>
                         <p>${{book.price}}</p>
-
                         <div class="d-flex justify-content-center">
                             {% csrf_token %}
                             <button class="btn-Add-to-card-show-by-category mb-3 add-to-cart-btn" id="add-to-card" data-book-id="{{ book.id }}">Add to Cart</button>
                         </div>
-
                     </div>
                 </div>
+            </div>
+            {% endfor %}
         </div>
-
-        {% endfor %}
-
-         </div>
-    
     </div>
 
 

@@ -1,0 +1,33 @@
+.cart-img{
+    width: 100%;
+    height: 100%;
+    /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+    border-radius: 3%;
+    transition: transform 0.5s ease-in-out;
+  
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.cart-img:hover {
+    transform: scale(1.05);
+}
+
+.btn-delete img{
+    background-color: white;
+}
+
+.btn-delete{
+    border: none;
+}
+
+.btn-check-out{
+    width: 20%;
+}
+
+
+table p{
+    font-family: 'Eroded' , sans-serif;
+}
+
+table h5{
+    font-family: 'Tanker' , sans-serif;
+}

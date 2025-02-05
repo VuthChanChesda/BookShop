@@ -99,7 +99,15 @@ show-info{
     padding: 0;
     text-decoration: none;
 }
- 
+
+.add-to-cart-btn.disabled {
+    background-color: purple;
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+.add-to-cart-btn.disabled:hover {
+    background-color: purple;
+}
 
 
 

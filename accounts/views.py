@@ -144,3 +144,13 @@ def cart_item_count(request):
     count = CartItem.objects.filter(session_key=session_key).count()
     return JsonResponse({'count': count})
 
+def cart_items(request):
+    session_key = request.session.session_key
+    if not session_key:
+        request.session.create()
+        session_key = request.session.session_key
+
+    cart_items = CartItem.objects.filter(session_key=session_key)
+    total_price = sum(item.Book.price * item.quantity for item in cart_items)
+    
+    return render(request, 'accounts/cart_items.html', {'cart_items': cart_items, 'total_price': total_price})

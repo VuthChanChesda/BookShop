@@ -1,0 +1,68 @@
+{% extends 'accounts/boilerplate.html' %}
+
+
+{% load static %}
+
+{% block content %}
+{% if cart_items %}
+    <div class="container mt-3">
+        <h2>Shopping Cart</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th class="text-end"></th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td class="align-middle" style="width: 180px;">
+                        <img src="{{ item.Book.cover_image }}" alt="Book Cover" class="img-fluid cart-img">
+                    </td>
+                    <td class="align-middle align-text-top">
+                        <h5 class="mb-1">{{ item.Book.title }}</h5>
+                        <p class="text-muted mb-1">{{ item.Book.author.name }}</p>
+                        <p class="mb-1">Hardcover</p>
+                    </td>
+                    <td class="align-middle align-text-top" style="width: 100px;">
+                        <input type="number" value="{{ item.quantity }}" min="1" class="form-control form-control-sm text-center">
+                    </td>
+                    <td class="align-middle align-text-top text-center" style="width: 150px;">
+                        <div>
+                           <span class="price"><p>${{ item.Book.price }}</p></span>
+                        </div>
+                    </td>
+                    <td class="align-middle align-text-top ms-2" style="width: 50px;">
+                        <button class="btn-delete">
+                            <img src="{% static 'images/delete.png' %}" alt="" class="img-fluid border-0">
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="container text-end ms-lg-5">
+        <span class="price"><h5>Total Price: ${{total_price}} </h5></span>
+    </div>
+    <div class="container text-end my-3">
+        <button class="btn-Add-to-card-show btn-check-out">check out</button>
+    </div>
+{% else %}
+    <div class="container mt-3">
+        <h2>Shopping Cart</h2>
+        <p>Your cart is empty</p>
+    </div>
+{% endif %}
+
+
+
+
+{% endblock %}
