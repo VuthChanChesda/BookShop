@@ -9,52 +9,41 @@ from django.views.decorators.http import require_GET
 
 # Create your views here.
 
-def home(request):
-    return render(request, 'accounts/home.html')
-
 def index(request):
-    # Get the category by name or raise a 404 error if not found
-    category_name = 'Comics & Graphic Novels'
-    category = get_object_or_404(Category, name=category_name)
-
-    category_manga= 'Manga & Graphic Novels'
-    category_manga_list = get_object_or_404(Category, name=category_manga)
-
-    category_horror = 'Horror'
-    category_horror_list = get_object_or_404(Category, name=category_horror)
+    # Get the categories by name or raise a 404 error if not found
+    category_comics = get_object_or_404(Category, name='Comics & Graphic Novels')
+    category_manga = get_object_or_404(Category, name='Manga & Graphic Novels')
+    category_horror = get_object_or_404(Category, name='Horror')
     
-    # Filter books by the given category
-    books = Book.objects.filter(category=category)
-    books_manga = Book.objects.filter(category=category_manga_list)
-    books_horror = Book.objects.filter(category=category_horror_list)
+    # Filter books by the given categories
+    books_comics = Book.objects.filter(category=category_comics)
+    books_manga = Book.objects.filter(category=category_manga)
+    books_horror = Book.objects.filter(category=category_horror)
 
-    
     context = {
-        'category': category,
-        'books': books,
+        'books_comics': books_comics,
         'books_manga': books_manga,
-        'books_horror': books_horror,   
+        'books_horror': books_horror,
     }
     
     return render(request, 'accounts/home.html', context)
 
 
 def book_detail(request, slug):
+
     book = get_object_or_404(Book, slug=slug)
     reviews = Review.objects.filter(book=book)
-
+    
      # Get the category by name or raise a 404 error if not found
+     #To show other books at the bottom of the page
     category_name = 'Comics & Graphic Novels'
     category = get_object_or_404(Category, name=category_name)
     books = Book.objects.filter(category=category)
 
-
     context = {
-        
         'book': book,
         'reviews': reviews,
         'books': books,
-        
     }
     return render(request, 'accounts/show.html', context)
 
@@ -72,9 +61,10 @@ def search(request):
     return render(request, 'accounts/search.html')  
 
 def search_books(request):
-    query = request.GET.get('q', '')
+    query = request.GET.get('q', '') #retrieves the value of the query parameter q from the URL. If the q parameter is not present in the URL, it defaults to an empty string ''.
     if query:
         books = Book.objects.filter(title__icontains=query) #perform case-insensitive search on title
+        #then we got a book object
         results = []
         for book in books:
             results.append({
@@ -85,7 +75,7 @@ def search_books(request):
                 'slug': book.slug,
                 'id': book.id,
             })
-        return JsonResponse(results, safe=False)
+        return JsonResponse(results, safe=False) #safe false allows the response to be a list (array) instead of a dictionary (object).
     return JsonResponse([], safe=False)
 
 def new_books(request):

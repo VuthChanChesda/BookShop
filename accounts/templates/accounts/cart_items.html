@@ -21,7 +21,9 @@
                 {% for item in cart_items %}
                 <tr>
                     <td class="align-middle" style="width: 180px;">
+                        <a href="{% url 'book_detail' slug=item.Book.slug %}">
                         <img src="{{ item.Book.cover_image }}" alt="Book Cover" class="img-fluid cart-img">
+                        </a>
                     </td>
                     <td class="align-middle align-text-top">
                         <h5 class="mb-1">{{ item.Book.title }}</h5>

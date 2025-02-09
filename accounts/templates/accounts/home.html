@@ -1,189 +1,120 @@
-{% extends 'accounts/boilerplate.html' %}
-
-{% block title %}Home{% endblock %}
-
-{% load static %}
-
-{% block content %}
-
-      <!-- pano -->
-      <div class="container-fluid px-0 pano">
-        <img
-          class="img-fluid"
-          src="{% static 'images/davies_2048x600_handle.webp' %}"
-          alt=""
-        />
-      </div>
-      <!-- pano -->
-
-      <!-- slide-img -->
-    <div class="container my-5 " id="newBook">
-        <div class="miniLogoWithText">
-          <h2 class="mb-1" id="text">Manga & Graphic Novels</h2>
-          <img
-            src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487"
-            alt=""
-          />
-          <a href="#">by BookShop.Org</a>
-        </div>
-
-        <div class="containers">
+{% extends 'accounts/boilerplate.html' %} {% block title %}Home{% endblock %} {% load static %} {% block content %}
+<!-- pano -->
+<div class="container-fluid px-0 pano">
+    <img class="img-fluid" src="{% static 'images/davies_2048x600_handle.webp' %}" alt="" />
+</div>
+<!-- pano -->
+<!-- slide-img -->
+<div class="container my-5" id="newBook">
+    <div class="miniLogoWithText">
+        <h2 class="mb-1" id="text">Manga & Graphic Novels</h2>
+        <img src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487" alt="" />
+        <a href="#">by BookShop.Org</a>
+    </div>
+    <div class="containers">
         {% for book in books %}
-          <div class="box">
+        <div class="box">
             <a href="{% url 'book_detail' slug=book.slug %}">
-            <img
-              src="{{ book.cover_image }}"
-              alt=""
-            />
-             </a>
-          </div>
+                <img src="{{ book.cover_image }}" alt="" />
+            </a>
+        </div>
         {% endfor %}
-
-        </div>
     </div>
-      <!-- slide-img -->
+</div>
+<!-- slide-img -->
 
-
-      <!-- slide-img -->
-      <div class="container mt-3 mb-5" id="newBook">
-        <div class="miniLogoWithText">
-          <h2 class="mb-1" id="text">Comic & Graphic Novels</h2>
-          <img
-            src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487"
-            alt=""
-          />
-          <a href="#">by BookShop.Org</a>
-        </div>
-
-        <div class="containers">
-        {% for book_manga in books_manga %}
-          <div class="box">
-            <a href="{% url 'book_detail' slug=book_manga.slug %}">
-            <img
-              src="{{ book_manga.cover_image }}"
-              alt=""
-            />
-             </a>
-          </div>
-        {% endfor %}
-
-        </div>
-    </div>
-      <!-- slide-img -->
 
 <!-- 4 x 4 img -->
 <div class="container py-4">
-
-  <h2>Horror Books</h2>
-  <div class="miniLogoWithText mb-2">
-    <img
-      src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487"
-      alt=""
-    />
-    <a href="#">by BookShop.Org</a>
-  </div>
-
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3  g-1">
-      {% for book_horror in books_horror|slice:":9" %}
+    <h2>Horror Books</h2>
+    <div class="miniLogoWithText mb-2">
+        <img src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487" alt="" />
+        <a href="#">by BookShop.Org</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1">
+        {% for book_horror in books_horror|slice:":9" %}
         <div class="col">
-          <div class="book-card">
-          <a href="{% url 'book_detail' slug=book_horror.slug %}">
-            <img src="{{book_horror.cover_image}}" alt="Darkly" class="book-cover rounded">
-          </a>
-            <div class="book-info">
-              <h2 class="book-title">{{book_horror.title}}</h2>
-              <p class="book-author">{{book_horror.author.name}}</p>
-              <div class="price">
-                <span class="current-price">{{book_horror.price}}</span>
-                <span class="original-price">$19.99</span>
-              </div>
+            <div class="book-card">
+                <a href="{% url 'book_detail' slug=book_horror.slug %}">
+                    <img src="{{book_horror.cover_image}}" alt="Darkly" class="book-cover rounded" />
+                </a>
+                <div class="book-info">
+                    <h2 class="book-title">{{book_horror.title}}</h2>
+                    <p class="book-author">{{book_horror.author.name}}</p>
+                    <div class="price">
+                        <span class="current-price">{{book_horror.price}}</span>
+                        <span class="original-price">$19.99</span>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        {% endfor %}    
+        {% endfor %}
     </div>
 </div>
 <!-- 4 x 4 img -->
 
-      <!-- promotion pic -->
-      <section
-        class="container py-5 d-lg-flex justify-content-around"
-        id="sponsor"
-      >
-        <div class="card" id="cards">
-          <div class="row">
-            <div class="col-6 img-card">
-              <img
-                src="https://images-us.bookshop.org/ingram/9781250367785.jpg?height=250&v=v2-6d87911b7864f11dab66fd8c8c79bf2b"
-                alt=""
-              />
-
-              <img
-                src="https://images-us.bookshop.org/ingram/9781250368294.jpg?height=250&v=v2-08c93154a5e7b3f270a388b111ddf262"
-                alt=""
-              />
-            </div>
-
-            <div class="col-6">
-              <div class="card-body">
-                <div class="card-body-pro-logo">
-                  <img
-                    class="card-img"
-                    src="https://images-production.bookshop.org/spree/curators/avatars/175/thumb/Screenshot_2024-09-18_at_10.15.31%E2%80%AFAM.png?1726668992"
-                    alt=""
-                    style="width: 40px"
-                  />
-                  <p><a href="">Bramble</a></p>
-                </div>
-                <p class="card-text" id="card-text">
-                  Discover the <br />
-                  New York Times <br />
-                  Best selling romantasy<br />
-                  series , Crown of Nyaxia
-                </p>
-              </div>
-            </div>
-          </div>
+<!-- slide-img -->
+<div class="container mt-3 mb-5" id="newBook">
+    <div class="miniLogoWithText">
+        <h2 class="mb-1" id="text">Comic & Graphic Novels</h2>
+        <img src="https://images-production.bookshop.org/spree/curators/avatars/10/thumb/Bookshop.org_B_Circle_Logo.png?1710255487" alt="" />
+        <a href="#">by BookShop.Org</a>
+    </div>
+    <div class="containers">
+        {% for book_manga in books_manga %}
+        <div class="box">
+            <a href="{% url 'book_detail' slug=book_manga.slug %}">
+                <img src="{{ book_manga.cover_image }}" alt="" />
+            </a>
         </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- slide-img -->
 
-        <div class="card" id="cards">
-          <div class="row">
+<!-- promotion pic -->
+<section class="container py-5 d-lg-flex justify-content-around" id="sponsor">
+    <div class="card" id="cards">
+        <div class="row">
             <div class="col-6 img-card">
-              <img
-                src="https://images-us.bookshop.org/ingram/9781638931249.jpg?height=250&v=v2-186a41d54f34b2eaf67c52cebf0c027a"
-                alt=""
-              />
-
-              <img
-                src="https://images-us.bookshop.org/ingram/9781638930969.jpg?height=250&v=v2-6454ed2af3a82bf147f548c37d006b79"
-                alt=""
-              />
+                <img src="https://images-us.bookshop.org/ingram/9781250367785.jpg?height=250&v=v2-6d87911b7864f11dab66fd8c8c79bf2b" alt="" />
+                <img src="https://images-us.bookshop.org/ingram/9781250368294.jpg?height=250&v=v2-08c93154a5e7b3f270a388b111ddf262" alt="" />
             </div>
-
             <div class="col-6">
-              <div class="card-body" id="card-body-img">
-                <div class="card-body-pro-logo">
-                  <img
-                    class="card-img"
-                    src="https://images-production.bookshop.org/spree/curators/avatars/174/thumb/zando-icon_light-svg.png?1726603429"
-                    alt=""
-                    style="width: 40px"
-                  />
-                  <p><a href="#">zendo</a></p>
+                <div class="card-body">
+                    <div class="card-body-pro-logo">
+                        <img class="card-img" src="https://images-production.bookshop.org/spree/curators/avatars/175/thumb/Screenshot_2024-09-18_at_10.15.31%E2%80%AFAM.png?1726668992" alt="" style="width: 40px;" />
+                        <p><a href="">Bramble</a></p>
+                    </div>
+                    <p class="card-text" id="card-text">
+                        Discover the <br />
+                        New York Times <br />
+                        Best selling romantasy<br />
+                        series , Crown of Nyaxia
+                    </p>
                 </div>
-
-                <p class="card-text" id="card-text">
-                  The Dr. Wren Muller series
-                </p>
-              </div>
             </div>
-          </div>
         </div>
-      </section>
-      <!-- promotion pic -->
-
-
-
-
+    </div>
+    <div class="card" id="cards">
+        <div class="row">
+            <div class="col-6 img-card">
+                <img src="https://images-us.bookshop.org/ingram/9781638931249.jpg?height=250&v=v2-186a41d54f34b2eaf67c52cebf0c027a" alt="" />
+                <img src="https://images-us.bookshop.org/ingram/9781638930969.jpg?height=250&v=v2-6454ed2af3a82bf147f548c37d006b79" alt="" />
+            </div>
+            <div class="col-6">
+                <div class="card-body" id="card-body-img">
+                    <div class="card-body-pro-logo">
+                        <img class="card-img" src="https://images-production.bookshop.org/spree/curators/avatars/174/thumb/zando-icon_light-svg.png?1726603429" alt="" style="width: 40px;" />
+                        <p><a href="#">zendo</a></p>
+                    </div>
+                    <p class="card-text" id="card-text">
+                        The Dr. Wren Muller series
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- promotion pic -->
 {% endblock %}

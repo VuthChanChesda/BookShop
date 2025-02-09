@@ -33,14 +33,6 @@ function updateURL(value) {
         
     });
     
-    // searchInput.addEventListener('input', function() {
-    //     // Update query and URL
-    //     query = searchInput.value;
-    //     updateURL(query);
- 
-    //     // Perform search
-    //     performSearch(query);
-    // });
  
     function performSearch(searchQuery) {
 
@@ -53,13 +45,15 @@ function updateURL(value) {
 
 
         if (searchQuery.length > 2) {
-            const url = new URL('/api/search/', window.location.origin);
-            url.searchParams.append('q', searchQuery);
+
+            const url = new URL('/api/search/', window.location.origin); // creates a new URL object with the path /api/search/ and the origin of the current window
+            url.searchParams.append('q', searchQuery); //adds a query parameter q with the value of searchQuery to the URL object.
  
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                        // Clear previous results
+                    
+                    // Clear previous results
                     resultsContainer.innerHTML = '';
  
                     if(data.length > 0) {
@@ -91,8 +85,7 @@ function updateURL(value) {
                             `;
                             resultsContainer.appendChild(bookElement);
                         });
-                        window.attachEventListeners();
-                        // window.updateCartItemCount();
+                        window.attachEventListeners(); // Attach event listeners to the new buttons
                     }
                     else {
                         resultsContainer.innerHTML = '<p class="text-center"><span> No results found</span></p>';

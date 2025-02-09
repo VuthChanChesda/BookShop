@@ -4,7 +4,6 @@ from django.utils.text import slugify
 
 # Create your models here.
 
-
 class Author(models.Model):
     name = models.CharField(max_length=100)
     bio = models.TextField(blank=True, null=True)
