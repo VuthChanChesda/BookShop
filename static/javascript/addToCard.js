@@ -1,8 +1,10 @@
 
 function attachEventListeners() {
+
     const addToCardButtons = document.querySelectorAll('.add-to-cart-btn');
 
     addToCardButtons.forEach(button => {
+
         const bookId = button.getAttribute('data-book-id');
         if (!bookId) {
             console.error('Book ID not found');
@@ -13,7 +15,7 @@ function attachEventListeners() {
         fetch(`/books/is_in_cart/${bookId}/`)
             .then(response => response.json())
             .then(data => {
-                if (data.in_cart) {
+                if (data.in_cart) { // in_cart is a boolean value we got from the server
                     button.textContent = 'Already in Cart';
                     button.disabled = true;
                     button.classList.add('disabled'); // Add the disabled class
@@ -48,6 +50,7 @@ function attachEventListeners() {
             .catch(error => console.error('Error:', error));
         });
     });
+
 }
 
 function updateCartItemCount() {

@@ -122,7 +122,8 @@ def is_in_cart(request, book_id):
     if not session_key:
         return JsonResponse({'in_cart': False})
     
-    in_cart = CartItem.objects.filter(Book_id=book_id, session_key=session_key).exists()
+    in_cart = CartItem.objects.filter(Book_id=book_id, session_key=session_key).exists() #checks if this book is in the cart and ensures it belongs to the current user (.exists() stops searching after finding the first match and returns a boolean value)
+
     return JsonResponse({'in_cart': in_cart})
 
 @require_GET
