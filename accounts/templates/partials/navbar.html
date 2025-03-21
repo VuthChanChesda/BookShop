@@ -32,8 +32,8 @@
             <div
             class="navbar-nav ms-auto"  id="login-sign-up-for-small-screen-non-collapsed"
           >
-            <a href="/signUpPage/signUP.html" class="nav-link btn"><span>Sign Up</span></a>
-            <a href="/LoginPageFile/login.html" class="nav-link ms-3 btn"
+            <a href="{% url 'signup' %}" class="nav-link btn"><span>Sign Up</span></a>
+            <a href="{% url 'login' %}" class="nav-link ms-3 btn"
               ><span>Sign In</span></a
             >
 
@@ -50,8 +50,11 @@
           <div
           class="navbar-nav ms-auto d-flex flex-row d-lg-none"  id="login-sign-up-for-small-screen-non-collapsed"
         >
+        <a href="{% url 'login' %}">
           <img src="{% static 'images/user.png' %}"
           alt="" class="user-icon" />
+        </a>
+
           <div class="cart-container">
             <a href="{% url 'cart_items' %}" class="nav-link ms-3">
               <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>

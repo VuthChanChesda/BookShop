@@ -1,0 +1,69 @@
+{% extends 'accounts/boilerplate.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center mt-5 mb-4">
+    <div class="row w-100">
+        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+            <div class="card shadow-sm border-0" id="form-card">
+                <div class="card-body p-4" id="form-card-login-register-body">
+                    <h2 class="card-title fw-bold mb-2 text-white">Sign Up</h2>
+                    <p class="card-text text-white-50 mb-4">Please enter your details to sign up</p>
+                    
+                    <form action="/login" method="post" class="validated-form" novalidate>
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-semibold text-white">Username</label>
+                            <input type="text" 
+                                   class="form-control modern-input" 
+                                   id="username" 
+                                   name="username" 
+                                   placeholder="Enter your username" 
+                                   autofocus 
+                                   required>
+                            <div class="valid-feedback text-white-50">Looks good!</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold text-white">Password</label>
+                            <input type="password" 
+                                   class="form-control modern-input" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="create your password" 
+                                   required>
+                            <div class="valid-feedback text-white-50">Looks good!</div>
+                        </div>
+            
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold text-white">Confirm Password</label>
+                            <input type="password" 
+                                   class="form-control modern-input" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="enter your password" 
+                                   required>
+                            <div class="valid-feedback text-white-50">Looks good!</div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mb-3">
+                            <button type="submit" class="btn w-100 modern-btn">Sign Up</button>
+                        </div>
+
+                        <div>
+                            <p class="text-center mt-3 text-white-50">
+                                Don't have an account? 
+                                <a href="/register" class="text-white fw-semibold text-decoration-none">Login</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

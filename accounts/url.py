@@ -5,6 +5,8 @@ urlpatterns = [
 
     path('', views.index, name='index'),
     path('search/', views.search, name='search'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name='signup'),
     path('books/category/new/', views.new_books, name='new_books'),
     path('books/add_to_cart/<int:book_id>/', views.add_to_cart, name='add_to_cart'),
     path('api/search/', views.search_books, name='search_books'),
@@ -13,9 +15,6 @@ urlpatterns = [
     path('books/is_in_cart/<int:book_id>/', views.is_in_cart, name='is_in_cart'),
     path('cart/item_count/', views.cart_item_count, name='cart_item_count'),
     path('cart/items/', views.cart_items, name='cart_items'),  # Add this line
-
-
-
 
 
 ]

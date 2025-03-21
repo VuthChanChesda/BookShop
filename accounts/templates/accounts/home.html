@@ -12,7 +12,7 @@
         <a href="#">by BookShop.Org</a>
     </div>
     <div class="containers">
-        {% for book in books %}
+        {% for book in books_comics %}
         <div class="box">
             <a href="{% url 'book_detail' slug=book.slug %}">
                 <img src="{{ book.cover_image }}" alt="" />

@@ -145,3 +145,10 @@ def cart_items(request):
     total_price = sum(item.Book.price * item.quantity for item in cart_items)
     
     return render(request, 'accounts/cart_items.html', {'cart_items': cart_items, 'total_price': total_price})
+
+def login(request):
+    return render(request, 'user/login.html')
+
+
+def signup(request):
+    return render(request, 'user/register.html')
