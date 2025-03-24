@@ -1,9 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404 , redirect
 from .models import Book, Category , Review , CartItem
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from django.views.decorators.http import require_GET
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate , logout
+from django.contrib import messages
+
+
 
 
 
@@ -99,56 +104,126 @@ def add_to_cart(request, book_id):
         request.session.create()
     session_key = request.session.session_key
 
-    # Check if the book is already in the cart
-    if CartItem.objects.filter(Book=book, session_key=session_key).exists():
-        return JsonResponse({'success': False, 'error': 'Book is already in the cart'})
-
-    # Add or update the cart item
-    cart_item, created = CartItem.objects.get_or_create(
-        Book=book,
-        session_key=session_key,
-        defaults={'quantity': quantity}
-    )
-    if not created:
-        cart_item.quantity += quantity
-        cart_item.save()
+    if request.user.is_authenticated:
+        # Associate cart item with the logged-in user
+        cart_item, created = CartItem.objects.get_or_create(
+            Book=book,
+            user=request.user,
+            defaults={'quantity': quantity}
+        )
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
+    else:
+        # Use session_key for guest users
+        cart_item, created = CartItem.objects.get_or_create(
+            Book=book,
+            session_key=session_key,
+            defaults={'quantity': quantity}
+        )
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
 
     # Return a JSON response for AJAX
     return JsonResponse({'success': True})
 
 @require_GET
 def is_in_cart(request, book_id):
-    session_key = request.session.session_key
-    if not session_key:
-        return JsonResponse({'in_cart': False})
-    
-    in_cart = CartItem.objects.filter(Book_id=book_id, session_key=session_key).exists() #checks if this book is in the cart and ensures it belongs to the current user (.exists() stops searching after finding the first match and returns a boolean value)
+    if request.user.is_authenticated:
+        # Check if the book exists in the logged-in user's cart
+        in_cart = CartItem.objects.filter(user=request.user, Book_id=book_id).exists()
+    else:
+        # Check if the book exists in the guest user's cart (session-based)
+        session_key = request.session.session_key
+        if not session_key:
+            return JsonResponse({'in_cart': False})
+
+        in_cart = CartItem.objects.filter(session_key=session_key, Book_id=book_id).exists()
 
     return JsonResponse({'in_cart': in_cart})
 
 @require_GET
 def cart_item_count(request):
-    session_key = request.session.session_key
-    if not session_key:
-        return JsonResponse({'count': 0})
-    
-    count = CartItem.objects.filter(session_key=session_key).count()
+    if request.user.is_authenticated:
+        # Count items linked to logged-in user
+        count = CartItem.objects.filter(user=request.user).count()
+    else:
+        # Use session_key for guest users
+        session_key = request.session.session_key
+        if not session_key:
+            return JsonResponse({'count': 0})
+
+        count = CartItem.objects.filter(session_key=session_key).count()
+
     return JsonResponse({'count': count})
 
-def cart_items(request):
-    session_key = request.session.session_key
-    if not session_key:
-        request.session.create()
-        session_key = request.session.session_key
 
-    cart_items = CartItem.objects.filter(session_key=session_key)
+def cart_items(request):
+    if request.user.is_authenticated:
+        # Fetch cart items linked to the user
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        # Use session_key for guest users
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+
+        cart_items = CartItem.objects.filter(session_key=session_key)
+
+    # Calculate total price
     total_price = sum(item.Book.price * item.quantity for item in cart_items)
-    
+
     return render(request, 'accounts/cart_items.html', {'cart_items': cart_items, 'total_price': total_price})
 
-def login(request):
+
+
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already taken")
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                messages.success(request, "Account created successfully!")
+                return redirect('login')
+        else:
+            messages.error(request, "Passwords do not match")
+
+    return render(request, 'user/register.html')
+
+
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            session_key = request.session.session_key  # Get the session key before login
+            login(request, user)  # Log the user in
+
+            # Transfer session-based cart items to the logged-in user
+            CartItem.objects.filter(session_key=session_key, user=None).update(user=user, session_key=None)
+
+            messages.success(request, "Login successful!")
+            return redirect('index')  # Change 'home' to your actual home page
+
+        else:
+            messages.error(request, "Invalid username or password")
+
     return render(request, 'user/login.html')
 
-
-def signup(request):
-    return render(request, 'user/register.html')
+def user_logout(request):
+    logout(request)
+    messages.success(request, "You have been logged out")
+    return redirect('login')

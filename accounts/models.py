@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -67,6 +68,8 @@ class Review(models.Model):
         return self.comment
 
 class CartItem(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Associate with user
     Book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     session_key = models.CharField(max_length=40, null=True, blank=True) 

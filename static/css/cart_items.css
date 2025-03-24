@@ -23,6 +23,21 @@
     width: 20%;
 }
 
+/* Add this to your CSS file */
+
+.cart-item-count {
+    transition: opacity 0.3s ease;
+}
+
+.cart-item-count.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.cart-item-count.loading {
+    opacity: 0.5;
+}
+
 
 table p{
     font-family: 'Eroded' , sans-serif;

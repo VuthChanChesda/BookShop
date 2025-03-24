@@ -53,6 +53,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 86400  # 1 day
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
 ROOT_URLCONF = 'crm.urls'
 
 TEMPLATES = [

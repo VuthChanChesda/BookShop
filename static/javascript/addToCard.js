@@ -53,27 +53,63 @@ function attachEventListeners() {
 
 }
 
+// function updateCartItemCount() {
+//     fetch('/cart/item_count/')
+//         .then(response => response.json())
+//         .then(data => {
+//             const cartItemCountElement = document.querySelectorAll('.cart-item-count');
+//             cartItemCountElement.forEach(card => {
+
+//                 if (card) {
+//                     if (data.count > 0) {
+//                         card.textContent = data.count;
+//                         card.style.display = 'inline';
+//                     } else {
+//                         card.style.display = 'none';
+//                     }
+//                 }
+
+//             });
+
+//         })
+//         .catch(error => console.error('Error:', error));
+// }
+
+let currentCartItemCount = null;  // Store the current cart item count
+
 function updateCartItemCount() {
+    const cartItemCountElements = document.querySelectorAll('.cart-item-count');
+    cartItemCountElements.forEach(card => {
+        card.classList.add('loading');  // Add loading state
+    });
+
     fetch('/cart/item_count/')
         .then(response => response.json())
         .then(data => {
-            const cartItemCountElement = document.querySelectorAll('.cart-item-count');
-            cartItemCountElement.forEach(card => {
-
-                if (card) {
-                    if (data.count > 0) {
-                        card.textContent = data.count;
-                        card.style.display = 'inline';
-                    } else {
-                        card.style.display = 'none';
+            const newCount = data.count;
+            if (newCount !== currentCartItemCount) {  // Only update if the count has changed
+                currentCartItemCount = newCount;  // Update the current count
+                cartItemCountElements.forEach(card => {
+                    if (card) {
+                        if (newCount > 0) {
+                            card.textContent = newCount;
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
                     }
-                }
-
-            });
-
+                });
+            }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            cartItemCountElements.forEach(card => {
+                card.classList.remove('loading');  // Remove loading state
+            });
+        });
 }
+
+
 
 // Attach functions to the window object to make them globally accessible
 window.attachEventListeners = attachEventListeners;

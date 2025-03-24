@@ -30,12 +30,17 @@
                   </button>
                 </form>
             <div
-            class="navbar-nav ms-auto"  id="login-sign-up-for-small-screen-non-collapsed"
-          >
-            <a href="{% url 'signup' %}" class="nav-link btn"><span>Sign Up</span></a>
-            <a href="{% url 'login' %}" class="nav-link ms-3 btn"
-              ><span>Sign In</span></a
-            >
+            class="navbar-nav ms-auto"  id="login-sign-up-for-small-screen-non-collapsed">
+
+            <!-- <a href="{% url 'register' %}" class="nav-link btn"><span>Sign Up</span></a>
+            <a href="{% url 'login' %}" class="nav-link ms-3 btn"> <span>Sign In</span> </a> -->
+
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}" class="nav-link btn"><span>Logout</span></a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}" class="nav-link btn">Sign In</a></li>
+            <li><a href="{% url 'register' %}" class="nav-link ms-3 btn">Sign Up</a></li>
+        {% endif %}
 
           <div class="cart-container">
             <a href="{% url 'cart_items' %}" class="nav-link ms-3">
