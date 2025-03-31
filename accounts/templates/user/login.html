@@ -5,6 +5,16 @@
 
 {% block content %}
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if "login" in message.tags %}
+                <li class="alert {{ message.tags }}">{{ message }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <div class="container d-flex justify-content-center align-items-center mt-5 mb-4">
     <div class="row w-100">
         <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">

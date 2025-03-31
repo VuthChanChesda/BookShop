@@ -177,7 +177,54 @@ def cart_items(request):
 
     return render(request, 'accounts/cart_items.html', {'cart_items': cart_items, 'total_price': total_price})
 
+@require_POST
+def delete_cart_item(request, book_id):
+    """
+    Deletes a cart item for the logged-in user or session-based user.
+    """
+    if request.user.is_authenticated:
+        # Delete the cart item associated with the logged-in user
+        CartItem.objects.filter(user=request.user, Book_id=book_id).delete()
+    else:
+        # Delete the cart item associated with the session key for guest users
+        session_key = request.session.session_key
+        if session_key:
+            CartItem.objects.filter(session_key=session_key, Book_id=book_id).delete()
 
+    # Return a JSON response for AJAX or redirect for non-AJAX requests
+    return redirect('cart_items')  # Redirect to the cart items page after deletion
+
+@require_POST
+def update_cart_item(request, book_id):
+    """
+    Updates the quantity of a cart item for the logged-in user or session-based user.
+    """
+    new_quantity = int(request.POST.get('quantity', 1))  # Get the new quantity from the POST data, default to 1
+
+    if new_quantity < 1:
+        messages.error(request, "Quantity must be at least 1.")
+        return redirect('cart_items')
+
+    if request.user.is_authenticated:
+        # Update the cart item for the logged-in user
+        cart_item = CartItem.objects.filter(user=request.user, Book_id=book_id).first()
+    else:
+        # Update the cart item for the session-based user
+        session_key = request.session.session_key
+        if not session_key:
+            messages.error(request, "Session not found.")
+            return redirect('cart_items')
+
+        cart_item = CartItem.objects.filter(session_key=session_key, Book_id=book_id).first()
+
+    if cart_item:
+        cart_item.quantity = new_quantity
+        cart_item.save()
+        messages.success(request, "Cart item updated successfully!")
+    else:
+        messages.error(request, "Cart item not found.")
+
+    return redirect('cart_items')
 
 
 def register(request):
@@ -189,14 +236,14 @@ def register(request):
 
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
-                messages.error(request, "Username already taken")
+                messages.error(request, "Username already taken", extra_tags="register")
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
-                messages.success(request, "Account created successfully!")
+                messages.success(request, "Account created successfully!" , extra_tags="register")
                 return redirect('login')
         else:
-            messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match", extra_tags="register")
 
     return render(request, 'user/register.html')
 
@@ -215,11 +262,11 @@ def user_login(request):
             # Transfer session-based cart items to the logged-in user
             CartItem.objects.filter(session_key=session_key, user=None).update(user=user, session_key=None)
 
-            messages.success(request, "Login successful!")
+            messages.success(request, "Login successful!",extra_tags="login")
             return redirect('index')  # Change 'home' to your actual home page
 
         else:
-            messages.error(request, "Invalid username or password")
+            messages.error(request, "Invalid username or password", extra_tags="login")
 
     return render(request, 'user/login.html')
 

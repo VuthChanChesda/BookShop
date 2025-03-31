@@ -12,8 +12,12 @@
                 <tr>
                     <th>Item</th>
                     <th class="text-end"></th>
-                    <th class="text-center">Qty</th>
+                    <!-- <th class="text-center">Qty</th> -->
                     <th class="text-center">Price</th>
+                    <th class="text-center">Delete</th>
+                    <th class="text-center">Update Qty</th>
+
+
                     <th></th>
                 </tr>
             </thead>
@@ -30,18 +34,28 @@
                         <p class="text-muted mb-1">{{ item.Book.author.name }}</p>
                         <p class="mb-1">Hardcover</p>
                     </td>
-                    <td class="align-middle align-text-top" style="width: 100px;">
+                    <!-- <td class="align-middle align-text-top" style="width: 100px;">
                         <input type="number" value="{{ item.quantity }}" min="1" class="form-control form-control-sm text-center">
-                    </td>
+                    </td> -->
                     <td class="align-middle align-text-top text-center" style="width: 150px;">
                         <div>
                            <span class="price"><p>${{ item.Book.price }}</p></span>
                         </div>
                     </td>
                     <td class="align-middle align-text-top ms-2" style="width: 50px;">
-                        <button class="btn-delete">
-                            <img src="{% static 'images/delete.png' %}" alt="" class="img-fluid border-0">
-                        </button>
+                        <form method="post" action="{% url 'delete_cart_item' book_id=item.Book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">
+                                <img src="{% static 'images/delete.png' %}" alt="Delete" class="img-fluid border-0">
+                            </button>
+                        </form>
+                    </td>
+                    <td class="align-middle align-text-top" style="width: 100px;">
+                        <form method="post" action="{% url 'update_cart_item' book_id=item.Book.id %}">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm text-center">
+                            <button type="submit" class="btn btn-primary btn-sm mt-2">Update</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

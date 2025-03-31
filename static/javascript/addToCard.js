@@ -53,27 +53,6 @@ function attachEventListeners() {
 
 }
 
-// function updateCartItemCount() {
-//     fetch('/cart/item_count/')
-//         .then(response => response.json())
-//         .then(data => {
-//             const cartItemCountElement = document.querySelectorAll('.cart-item-count');
-//             cartItemCountElement.forEach(card => {
-
-//                 if (card) {
-//                     if (data.count > 0) {
-//                         card.textContent = data.count;
-//                         card.style.display = 'inline';
-//                     } else {
-//                         card.style.display = 'none';
-//                     }
-//                 }
-
-//             });
-
-//         })
-//         .catch(error => console.error('Error:', error));
-// }
 
 let currentCartItemCount = null;  // Store the current cart item count
 
