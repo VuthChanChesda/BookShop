@@ -1,0 +1,52 @@
+{% extends 'accounts/boilerplate.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="khqr-container">
+    <div class="header">
+        <h1>KHQR Payment</h1>
+    </div>
+    
+    <div class="nbc-logo">
+        <div class="logo-container">
+            <img src="{% static 'images/bakong_logo.png' %}" alt="Bakong Logo" class="bakong-logo">
+            <p id="timer"  class="mt-1 text-info fw-bold">Time remaining: 3:00</p>
+            <img src="{% static 'images/qr.jpeg' %}" alt="KHQR Logo" class="khqr-logo">
+        </div>
+    </div>
+    
+    <div class="total-section">
+        <h3>Total: <span class="total-amount">${{ total_price }}</span></h3>
+        <p id="qr-expiry-message" style="display: none; margin-top: 10px;"></p>
+    </div>
+     
+    <div class="qr-wrapper">
+        <div class="qr-code">
+            <img src="{{ qr_code_url }}" alt="KHQR Code">
+        </div>
+        <div class="qr-overlay">
+            <span class="qr-symbol">$</span>
+        </div>
+    </div>
+    
+    <div class="info">
+        <p class="merchant-name">Merchant: <strong>CHANCHESDA VUTH</strong></p>
+        <p class="merchant-city">City: <strong>PHNOM PENH</strong></p>
+        <div id="payment-data" data-md5-hash="{{ md5_hash }}"></div>
+        <p id="verification-result" style="margin-top: 10px; color: #333;">Verifying payment...</p>
+    </div>
+
+    
+    <div class="footer">
+        <p>Powered by <strong>National Bank of Cambodia</strong></p>
+        <p>Scan with any Bakong-supported banking app</p>
+        <img src="{% static 'images/bank_logo.png' %}" alt="Supported Banks" class="supported-banks">
+    </div>
+</div>
+
+
+
+<!-- debug -->
+<!-- <div id="payment-data" data-md5-hash="{{ md5_hash }}"></div>  -->
+{% endblock %}

@@ -69,7 +69,10 @@
         <span class="price"><h5>Total Price: ${{total_price}} </h5></span>
     </div>
     <div class="container text-end my-3">
-        <button class="btn-Add-to-card-show btn-check-out">check out</button>
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-Add-to-card-show-by-category btn-check-out">Check Out</button>
+        </form>
     </div>
 {% else %}
     <div class="container mt-3">

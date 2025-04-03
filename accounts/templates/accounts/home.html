@@ -1,4 +1,9 @@
 {% extends 'accounts/boilerplate.html' %} {% block title %}Home{% endblock %} {% load static %} {% block content %}
+
+<div class="container mt-3">
+    <div id="alert-container"></div> <!-- Placeholder for the alert -->
+</div>
+
 <!-- pano -->
 <div class="container-fluid px-0 pano">
     <img class="img-fluid" src="{% static 'images/davies_2048x600_handle.webp' %}" alt="" />
@@ -117,4 +122,6 @@
     </div>
 </section>
 <!-- promotion pic -->
+
+
 {% endblock %}

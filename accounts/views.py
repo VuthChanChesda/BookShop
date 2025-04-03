@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404 , redirect
-from .models import Book, Category , Review , CartItem
+from .models import Book, Category , Review , CartItem , Order, OrderItem
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
@@ -7,10 +7,12 @@ from django.views.decorators.http import require_GET
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate , logout
 from django.contrib import messages
-
-
-
-
+from bakong_khqr import KHQR
+import qrcode
+from io import BytesIO
+import base64
+import hashlib
+import requests
 
 
 # Create your views here.
@@ -278,4 +280,145 @@ def user_logout(request):
 
 
 
+@require_POST
+def checkout(request):
+    """
+    Handles the checkout process for authenticated users and generates a QR code for payment.
+    """
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to log in to check out.")
+        return redirect('login')
 
+    # Fetch cart items for the logged-in user
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    if not cart_items.exists():
+        messages.error(request, "Your cart is empty.")
+        return redirect('cart_items')
+
+    # Calculate total price
+    total_price = sum(item.Book.price * item.quantity for item in cart_items)
+    total_price = f"{total_price:.2f}"  # Convert to a string with 2 decimal places
+
+    # Create an order
+    order = Order.objects.create(
+        user=request.user,
+        total_price=total_price,
+    )
+
+    # Create order items
+    for item in cart_items:
+        OrderItem.objects.create(
+            order=order,
+            book=item.Book,
+            quantity=item.quantity,
+            price=item.Book.price,
+        )
+
+
+    bill_number = f"INV{order.id}"  # Use the order ID as the bill number
+    
+
+    # Generate KHQR String for payment
+    khqr = KHQR("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNzAzMTA5OWJiZWI5NDRkYyJ9LCJpYXQiOjE3NDM2MDYzMjcsImV4cCI6MTc1MTM4MjMyN30.aEzseGAUdX8PcIFxj2a5xN0QzeF-ZwL-tIHU2t_iv_Y")  # Replace with your actual Bakong Developer Token
+    khqr_string = khqr.create_qr(
+        bank_account='vuth_chanchesda@aclb',  # Your Bakong account ID
+        merchant_name='CHANCHESDA VUTH',
+        merchant_city='PHNOM PENH',
+        amount=total_price,  # Set the total price as the amount
+        currency='USD',
+        store_label='Book Shop',
+        phone_number='070482285',
+        bill_number=bill_number,  # Use the order ID as the bill number
+        terminal_label='Cashier_1',
+        static=False  # Set to True for a static QR code
+    )
+
+    # Compute the MD5 hash of the KHQR string
+    md5_hash = khqr.generate_md5(khqr_string)
+
+    print("Calling khqr.check_payment...")
+    payment_status = khqr.check_payment(md5_hash)
+    print("Payment Status:", payment_status)
+    print("MD5 Hash:", md5_hash)
+    print("Generated KHQR String:", khqr_string)
+
+    testmd5 = hashlib.md5(khqr_string.encode()).hexdigest()
+    print("MD5 test:", testmd5)
+
+
+    # Save the MD5 hash in the order (optional)
+    order.md5_hash = md5_hash
+    order.save()
+
+    # Generate QR Code Image
+    qr = qrcode.make(khqr_string)
+    qr_buffer = BytesIO()
+    qr.save(qr_buffer, format="PNG")
+    qr_base64 = base64.b64encode(qr_buffer.getvalue()).decode()
+
+    # Render the payment page with the QR code and MD5 hash
+    return render(request, 'accounts/payment.html', {
+        'qr_code_url': f"data:image/png;base64,{qr_base64}",
+        'qr_data': khqr_string,
+        'md5_hash': md5_hash,
+        'total_price': total_price,
+    })
+
+
+def verify_payment(request, md5_hash):
+    """
+    Verifies the payment status using the Bakong API.
+    """
+    try:
+        # Bakong API endpoint
+        url = "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5"
+        headers = {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNzAzMTA5OWJiZWI5NDRkYyJ9LCJpYXQiOjE3NDM2MDYzMjcsImV4cCI6MTc1MTM4MjMyN30.aEzseGAUdX8PcIFxj2a5xN0QzeF-ZwL-tIHU2t_iv_Y",  # Replace with your actual API token
+            "Content-Type": "application/json",
+        }
+        payload = {"md5": md5_hash}
+
+        # Send a POST request to the Bakong API
+        response = requests.post(url, json=payload, headers=headers)
+        print("Bakong API Response:", response.status_code, response.text)
+        print("MD5 Hash for Verification:", payload)
+
+        if response.status_code == 200:
+            payment_status = response.json()
+
+            # Check if the transaction is found
+            if payment_status.get("responseCode") == 1:  # Transaction not found
+                return JsonResponse({"error": "Transaction not found. Please complete the payment."}, status=404)
+
+            # If the payment is completed, update the order status
+            if payment_status.get("responseCode") == 0:  # Payment successful
+                try:
+                    order = Order.objects.get(md5_hash=md5_hash)
+                    order.status = "Completed"
+                    order.save()
+
+                    # Clear the cart for the user
+                    if request.user.is_authenticated:
+                        CartItem.objects.filter(user=request.user).delete()
+                    else:
+                        session_key = request.session.session_key
+                        if session_key:
+                            CartItem.objects.filter(session_key=session_key).delete()
+                
+
+                except Order.DoesNotExist:
+                    return JsonResponse({"error": "Order not found"}, status=404)
+
+                  # Return a JSON response with payment status, redirect URL, and message
+                                # Return the payment status as a JSON response
+                return JsonResponse(payment_status, status=200)
+
+           
+            else:
+                return JsonResponse({"error": "Payment verification failed."}, status=400)
+        else:
+            return JsonResponse({"error": response.text}, status=response.status_code)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

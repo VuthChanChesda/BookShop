@@ -77,3 +77,24 @@ class CartItem(models.Model):
     def __str__(self):
         return self.Book.title
 
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Only authenticated users can place orders
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='Pending')  # e.g., Pending, Completed, Canceled
+    md5_hash = models.CharField(max_length=32, blank=True, null=True)  # Store the MD5 hash
+
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.user.username}"
+    
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Price at the time of purchase
+
+    def __str__(self):
+        return f"{self.book.title} (x{self.quantity})"
+

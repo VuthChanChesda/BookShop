@@ -7,10 +7,16 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('api/search/', views.search_books, name='search_books'),
 
+
+
     # Authentication
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+
+    #payment
+    path('checkout/', views.checkout, name='checkout'),
+    path('verify-payment/<str:md5_hash>/', views.verify_payment, name='verify_payment'),
 
     # Cart-related URLs
     path('cart/items/', views.cart_items, name='cart_items'),
