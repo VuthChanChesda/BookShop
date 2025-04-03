@@ -13,6 +13,8 @@ from io import BytesIO
 import base64
 import hashlib
 import requests
+from decouple import config
+
 
 
 # Create your views here.
@@ -317,10 +319,11 @@ def checkout(request):
 
 
     bill_number = f"INV{order.id}"  # Use the order ID as the bill number
-    
+    bakong_api_token = config('BAKONG_API_TOKEN')
+
 
     # Generate KHQR String for payment
-    khqr = KHQR("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNzAzMTA5OWJiZWI5NDRkYyJ9LCJpYXQiOjE3NDM2MDYzMjcsImV4cCI6MTc1MTM4MjMyN30.aEzseGAUdX8PcIFxj2a5xN0QzeF-ZwL-tIHU2t_iv_Y")  # Replace with your actual Bakong Developer Token
+    khqr = KHQR(bakong_api_token)  # Replace with your actual Bakong Developer Token
     khqr_string = khqr.create_qr(
         bank_account='vuth_chanchesda@aclb',  # Your Bakong account ID
         merchant_name='CHANCHESDA VUTH',
@@ -371,10 +374,13 @@ def verify_payment(request, md5_hash):
     Verifies the payment status using the Bakong API.
     """
     try:
+
+        # Load the token from the .env file
+        bakong_api_token = config('BAKONG_API_TOKEN')
         # Bakong API endpoint
         url = "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5"
         headers = {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNzAzMTA5OWJiZWI5NDRkYyJ9LCJpYXQiOjE3NDM2MDYzMjcsImV4cCI6MTc1MTM4MjMyN30.aEzseGAUdX8PcIFxj2a5xN0QzeF-ZwL-tIHU2t_iv_Y",  # Replace with your actual API token
+            "Authorization": f"Bearer {bakong_api_token}",  # Replace with your actual API token
             "Content-Type": "application/json",
         }
         payload = {"md5": md5_hash}

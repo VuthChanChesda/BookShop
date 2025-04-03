@@ -57,6 +57,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 1 day
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+# Load environment variables from .env file
+BAKONG_API_TOKEN = os.getenv('BAKONG_API_TOKEN')
+
 
 ROOT_URLCONF = 'crm.urls'
 
