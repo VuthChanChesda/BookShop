@@ -22,7 +22,7 @@
                           <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
                       </svg>
                   </button>
-                  <input class="input" placeholder="search your books" required="" type="text" id="search-input" name="q" oninput="updateURL(this.value)" value="{{query}}" >
+                  <input class="input" placeholder="search your books"  type="text" id="search-input" name="q" oninput="updateURL(this.value)" value="{{query}}" >
                   <button class="reset" type="reset">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
@@ -37,6 +37,7 @@
 
         {% if user.is_authenticated %}
             <li><a href="{% url 'logout' %}" class="nav-link btn"><span>Logout</span></a></li>
+            <li><a href="{% url 'completed_order_items' %}" class="nav-link ms-3"><img class="img-fluid " width="20px"  src="{% static 'images/history.png' %}" alt="history"></a></li>
         {% else %}
             <li><a href="{% url 'login' %}" class="nav-link btn">Sign In</a></li>
             <li><a href="{% url 'register' %}" class="nav-link ms-3 btn">Sign Up</a></li>
@@ -52,20 +53,25 @@
           </div>
           </div>
 
-          <div
-          class="navbar-nav ms-auto d-flex flex-row d-lg-none"  id="login-sign-up-for-small-screen-non-collapsed"
-        >
-        <a href="{% url 'login' %}">
-          <img src="{% static 'images/user.png' %}"
-          alt="" class="user-icon" />
-        </a>
+          <!-- mobile navbar part -->
+        <div class="navbar-nav ms-auto d-flex flex-row d-lg-none"  id="login-sign-up-for-small-screen-non-collapsed">
 
           <div class="cart-container">
-            <a href="{% url 'cart_items' %}" class="nav-link ms-3">
-              <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>
-              <span id="cart-item-count" class="cart-item-count">0</span>
-           </a>
+              <a href="{% url 'cart_items' %}" class="nav-link mx-2 mt-2">
+                <i class="fa-solid fa-cart-shopping" style="color: #63e6be"></i>
+                <span id="cart-item-count" class="cart-item-count">0</span>
+            </a>
           </div>
+
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}" class="nav-link btn mt-3 ms-2"><span>Logout</span></a></li>
+      {% else %}
+          <a href="{% url 'login' %}">
+            <img src="{% static 'images/user.png' %}"
+            alt="" class="user-icon" />
+          </a>
+      {% endif %}
+
         </div>
         
 
@@ -158,6 +164,11 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#funnyBook">Funny Book</a>
                 </li>
+                
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'completed_order_items' %}" class="nav-link"> History</a></li>
+                {% endif %}
+
               </ul>
             </div>
           </div>
@@ -194,11 +205,11 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="text-center pt-2 text-promotion"
       >
         <p>Buy 30$ worth of books get <span>30% </span>off right now</p>
-      </div>
+      </div> -->
 
 
 

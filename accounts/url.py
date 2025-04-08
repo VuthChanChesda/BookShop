@@ -13,10 +13,13 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+    
 
     #payment
     path('checkout/', views.checkout, name='checkout'),
     path('verify-payment/<str:md5_hash>/', views.verify_payment, name='verify_payment'),
+
+    path('history/items/', views.completed_order_items, name='completed_order_items'),
 
     # Cart-related URLs
     path('cart/items/', views.cart_items, name='cart_items'),

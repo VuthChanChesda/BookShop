@@ -57,6 +57,11 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 1 day
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
+SESSION_COOKIE_SECURE = True       # Only send cookies over HTTPS
+SESSION_COOKIE_HTTPONLY = True     # JavaScript can't access cookie
+SESSION_COOKIE_SAMESITE = 'Lax'    # Helps protect against CSRF
+
+
 # Load environment variables from .env file
 BAKONG_API_TOKEN = os.getenv('BAKONG_API_TOKEN')
 

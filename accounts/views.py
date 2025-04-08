@@ -14,6 +14,9 @@ import base64
 import hashlib
 import requests
 from decouple import config
+from django.contrib.auth.decorators import login_required
+
+
 
 
 
@@ -428,3 +431,18 @@ def verify_payment(request, md5_hash):
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+
+
+@login_required
+def completed_order_items(request):
+    """
+    Renders a page showing all order items for completed orders of the logged-in user.
+    """
+    # Fetch OrderItems where the related Order has a "Completed" status
+    completed_order_items = OrderItem.objects.filter(order__user=request.user, order__status="Completed")
+
+    # Pass the completed order items to the template
+    return render(request, 'accounts/history.html', {
+        'completed_order_items': completed_order_items
+    })

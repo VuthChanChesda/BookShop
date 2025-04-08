@@ -5,12 +5,12 @@
 *.pyc
 __pycache__/
 
-# Ignore database files
-*.sqlite3
+# # Ignore database files
+# *.sqlite3
 
-# Ignore media and static files (if applicable)
-media/
-staticfiles/
+# # Ignore media and static files (if applicable)
+# media/
+# staticfiles/
 
 # Ignore virtual environment
 venv/
