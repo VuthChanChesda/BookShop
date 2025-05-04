@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -136,8 +137,14 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS =[
-    BASE_DIR / 'static/',
+    BASE_DIR / '/static/',
 ]
+
+# Folder where static files will be collected for production (must be writable)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Where Django will look for additional static files in your app
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/'
 
@@ -148,5 +155,5 @@ MEDIA_ROOT = Path(BASE_DIR) / 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
