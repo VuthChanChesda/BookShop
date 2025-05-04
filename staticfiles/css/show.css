@@ -1,0 +1,114 @@
+.show-img img{
+    border-radius: 3%;
+    transition: transform 0.5s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.show-img img:hover {
+    transform: scale(1.05);
+  }
+
+show-info{
+    padding: 10px 8px 10px 8px;
+    width: 100%;
+    margin: 20px auto;
+}
+.show-info p{
+    font-family: 'Erode';
+    font-weight: 200;
+    color: gray;
+    padding: 0;
+    margin: 10px 0 ;
+}
+.show-info span{
+    font-weight: 200;
+    font-family: 'Erode';
+    color: black;
+}
+
+#authorName{
+    color: purple;
+}
+
+.btn-Add-to-card-show{
+    background-color: #f13555;
+    color: white;
+    border: none;
+    padding: 9px 0;
+    font-family: 'Tanker' , sans-serif;
+    cursor: pointer;
+
+ 
+    --border-radius: 30px;
+    border-radius: var(--border-radius);
+    /* background: var(--input-bg,#fff); */
+    width: 30%;
+    transition: transform 0.5s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    
+}
+
+.btn-Add-to-card-show:hover{
+    background-color: #ce3950;
+    transform: scale(1.05);
+
+}
+
+.block-price {
+    border: 2px solid purple;
+    width: 30%;
+    text-align: start;
+    border-radius: 10px;
+    background-color: rgb(231, 230, 230);
+
+}
+
+.block-price p{
+    margin: 0;
+
+
+}
+.block-price p:first-child{
+    color: purple;
+    font-family: 'Tanker' , sans-serif;
+    padding: 18px 0 0 10px;
+    font-size: 1.3rem;
+}
+
+.block-price p:last-child{
+    color: black;
+    padding: 0 0 18px 10px;
+    font-size: 1.2rem;
+
+}
+
+.category-link-show-page span {
+    color: purple;
+    font-family: 'Eroded' , sans-serif;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.category-link-show-page a {
+    color: purple;
+    font-family: 'Eroded' , sans-serif;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.add-to-cart-btn.disabled {
+    background-color: purple;
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+.add-to-cart-btn.disabled:hover {
+    background-color: purple;
+}
+
+
+
+

@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'test';
+    src: url('{% static "font/Tanker_Complete/Tanker-Regular.otf" %}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'test';
+}
+
+h1 , li , h2 , span{
+    font-family: 'Tanker';
+    font-weight: bold;
+}
+
+p{
+    font-family: 'Erode';
+}
+
+
