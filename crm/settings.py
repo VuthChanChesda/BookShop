@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-xm_89w+vtymv$57p2fb6j07183n5zva8fq+#xns!a7v%g5ch%8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['BookShop.onrender.com']
+ALLOWED_HOSTS = ['crm.onrender.com']
 
 
 # Application definition
